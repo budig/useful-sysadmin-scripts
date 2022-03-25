@@ -1,0 +1,31 @@
+#!/bin/bash
+
+use () {
+    echo "Use: $0 [-p 443] domain1.org domain2.org (and so on)"
+    exit 0
+}
+
+# Default args
+port=443
+
+# I use case statement in order to be able in the future to add new features
+while getopts dp option
+do
+    case $option in
+        p)
+            port=$option_arg
+            ;;
+    esac
+done
+
+# Check if the script has no arguments in the commnand line
+if [ "$#" = "0" ]; then
+    use
+fi
+
+for domain in "$@"; do
+    echo "--- "$domain" ---"
+    echo | openssl s_client -servername $domain -connect $domain:$port 2>/dev/null | openssl x509 -noout -enddate | awk -F= '{print $2}'
+
+    echo ""
+done
