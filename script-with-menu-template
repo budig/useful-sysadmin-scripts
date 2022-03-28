@@ -1,0 +1,36 @@
+#!/bin/bash
+
+while :
+do
+cat << EOF
+Menu selection:
+
+    1. Display your distro version
+    2. Display your Home folder size
+    0. Exit
+
+EOF
+echo -n "Select your option [0-2]:"
+read -r selection
+
+case $selection in
+    0) 
+        echo "Bye."
+        exit 1
+        ;;
+
+    1) cat /etc/issue;;
+    2) 
+        if [ "$UID" = 0 ]; then
+            echo "Home Size (All Users)"
+            du -sh /home/*
+        else
+            echo "Home Size ($USER)"
+            du -sh "$HOME"
+        fi
+        ;;
+    *)
+        echo "This option is not allowed." >&2
+        exit 1
+esac
+done
