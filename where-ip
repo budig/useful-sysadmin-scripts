@@ -10,6 +10,12 @@ if [ "$#" = "0" ]; then
     use
 fi
 
+# Check if jason query package is installed on the system
+if ! type jq &> /dev/null; then
+    echo "Error. jq package nos installed (apt install jq)"
+    exit 1
+fi
+
 web=$(echo "http://ip-api.com/json/"$1)
 data=$(curl $web -s)
 
