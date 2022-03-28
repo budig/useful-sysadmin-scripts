@@ -1,0 +1,24 @@
+#!/bin/bash
+
+use () {
+    echo "Use: $0 [IP Address]"
+    exit 0
+}
+
+# Check if the script has no arguments in the commnand line
+if [ "$#" = "0" ]; then
+    use
+fi
+
+web=$(echo "http://ip-api.com/json/"$1)
+data=$(curl $web -s)
+
+response=$(echo $data | jq '.status' -r) # -r extracts the raw without quotes ""
+if [ $response = "success" ]; then
+    country=$(echo $data | jq '.country' -r)
+    region=$(echo $data | jq '.regionName' -r)
+    city=$(echo $data | jq '.city' -r)
+    org=$(echo $data | jq '.org' -r)
+    echo "IP: "$1 "-->" $country, $region, $city
+    echo "                  -->" $org
+fi
