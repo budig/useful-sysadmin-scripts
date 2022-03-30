@@ -19,7 +19,7 @@ import socket
 from dotenv import load_dotenv
 load_dotenv()
 
-#Change login mode----------------------------------------------
+#Change login mode-------no e necesario os ---------------------------------------
 NETDISCO_URL=os.getenv('NETDISCO_URL')
 USERNAME_NETDISCO=os.getenv('USERNAME_NETDISCO')
 PASSWORD_NETDISCO=os.getenv('PASSWORD_NETDISCO')
