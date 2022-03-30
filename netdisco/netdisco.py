@@ -19,6 +19,7 @@ import socket
 from dotenv import load_dotenv
 load_dotenv()
 
+#Change login mode----------------------------------------------
 NETDISCO_URL=os.getenv('NETDISCO_URL')
 USERNAME_NETDISCO=os.getenv('USERNAME_NETDISCO')
 PASSWORD_NETDISCO=os.getenv('PASSWORD_NETDISCO')
@@ -28,7 +29,6 @@ def request_api_key():
                     auth=(USERNAME_NETDISCO, PASSWORD_NETDISCO),
                     headers={'Accept': 'application/json'})
 
-#Change login mode
 
     api_key = r.json()['api_key']
     return api_key
