@@ -28,6 +28,8 @@ def request_api_key():
                     auth=(USERNAME_NETDISCO, PASSWORD_NETDISCO),
                     headers={'Accept': 'application/json'})
 
+#Change login mode
+
     api_key = r.json()['api_key']
     return api_key
 
