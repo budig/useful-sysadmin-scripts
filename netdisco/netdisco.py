@@ -54,8 +54,8 @@ def print_menu():
     for key in menu_options.keys():
         print (key, '--', menu_options[key] )
 
-def menu_1_search_host(hostname):
-    api_key=request_api_key()
+def menu_1_search_host(hostname, usernet):
+    api_key=request_api_key(usernet)
     r = requests.get(NETDISCO_URL+'/api/v1/search/node',
                     headers={'Accept': 'application/json',
                             'Authorization': api_key},
@@ -68,8 +68,8 @@ def menu_1_search_host(hostname):
     # ..
     # .. (USE PANDAS?)
      
-def menu_2_get_nodes_on_device(device):
-    api_key=request_api_key()
+def menu_2_get_nodes_on_device(device, usernet):
+    api_key=request_api_key(usernet)
     r = requests.get(NETDISCO_URL + '/api/v1/object/device/' + resolve_name_to_ip(device) + '/nodes',
                     headers={'Accept': 'application/json',
                             'Authorization': api_key})
@@ -81,8 +81,8 @@ def menu_2_get_nodes_on_device(device):
     activos = df.loc[df['active']==1]
     print(activos)
 
-def menu_3_get_port_vlans_switch(device):
-    api_key=request_api_key()
+def menu_3_get_port_vlans_switch(device, usernet):
+    api_key=request_api_key(usernet)
     r = requests.get(NETDISCO_URL + '/api/v1/object/device/' + resolve_name_to_ip(device) + '/port_vlans',
                     headers={'Accept': 'application/json',
                             'Authorization': api_key})
@@ -133,7 +133,7 @@ if __name__=='__main__':
             except ValueError:
                 print("Formato incorrecto")
                 continue
-            menu_1_search_host(hostname)
+            menu_1_search_host(hostname, usernet)
 
         elif option == 2:
             try:
@@ -141,7 +141,7 @@ if __name__=='__main__':
             except ValueError:
                 print("Formato incorrecto")
                 continue
-            menu_2_get_nodes_on_device(device)
+            menu_2_get_nodes_on_device(device, usernet)
 
         elif option == 3:
             try:
@@ -149,7 +149,7 @@ if __name__=='__main__':
             except ValueError:
                 print("Formato incorrecto")
                 continue
-            menu_3_get_port_vlans_switch(device)
+            menu_3_get_port_vlans_switch(device, usernet)
 
         elif option == 4:
             print('Adiós')
