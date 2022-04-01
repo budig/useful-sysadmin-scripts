@@ -16,13 +16,19 @@ import os
 import json
 import pandas as pd
 import socket
+from getpass import getpass
+import keyring
 from dotenv import load_dotenv
 load_dotenv()
 
-#Change login mode-------no e necesario os ---------------------------------------
+#login mode-------keyring
+#Defined in .env: (change USERNAME_NETDISCO and PASSWORD_NETDISCO) + cambiar a inglés<-----------------
 NETDISCO_URL=os.getenv('NETDISCO_URL')
-USERNAME_NETDISCO=os.getenv('USERNAME_NETDISCO')
-PASSWORD_NETDISCO=os.getenv('PASSWORD_NETDISCO')
+SRVKERING = os.getenv('SRVKERING')
+#USERNAME_NETDISCO=os.getenv('USERNAME_NETDISCO')
+#PASSWORD_NETDISCO=os.getenv('PASSWORD_NETDISCO')
+
+
 
 def request_api_key():
     r = requests.post(NETDISCO_URL+'/login',
@@ -86,8 +92,33 @@ def menu_3_get_port_vlans_switch(device):
     df = pd.DataFrame(data_search)
     print(df)
 
+def userData(usuvalida):
+        """ usuDatos genera anillo de contraseñas para servicio srv. devuelve usuario"""
+
+        if usu is None:
+            usu = usuvalida
+            try:
+                pwd = getpass('contraseña: ')
+            except Exception as error:
+                raise error
+            keyring.set_password(SRVKERING, usu, pwd)
+            
+def delete_pwd():
+        """Elimina password de anillo y establece variable usu a None"""
+
+        try:
+            keyring.delete_password(SRVKERING, usu)
+            usu = None
+        except Exception as e:
+            raise Exception("No existe password para " + usu + " en el servicio " + SRVKERING, e)
+
+def menu_0_validation():
+    user_srv = input('\nNombre de usuario para validación: ')
+    userData(user_srv)
+
 if __name__=='__main__':
     while(True):
+        menu_0_validation()
         print_menu()
         option = ''
         try:
@@ -126,6 +157,9 @@ if __name__=='__main__':
 
         else:
             print('Opción incorrecta. Por favor, introduce un número entre el 1 y el 4.')
+            
+    #Delete kering pwd:
+    delete_pwd()
 
 
 
