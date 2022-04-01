@@ -11,6 +11,7 @@
           We should implement the use of the operating system keyring.
 '''
 
+
 import requests
 import os
 import json
@@ -30,9 +31,9 @@ SRVKERING = os.getenv('SRVKERING')
 
 
 
-def request_api_key():
+def request_api_key(user):
     r = requests.post(NETDISCO_URL+'/login',
-                    auth=(USERNAME_NETDISCO, PASSWORD_NETDISCO),
+                    auth=(user, keyring.get_password(SRVKERING, user)),
                     headers={'Accept': 'application/json'})
 
 
@@ -93,32 +94,31 @@ def menu_3_get_port_vlans_switch(device):
     print(df)
 
 def userData(usuvalida):
-        """ usuDatos genera anillo de contraseñas para servicio srv. devuelve usuario"""
-
-        if usu is None:
-            usu = usuvalida
-            try:
-                pwd = getpass('contraseña: ')
-            except Exception as error:
-                raise error
-            keyring.set_password(SRVKERING, usu, pwd)
+        """ usuDatos genera anillo de contraseñas SRVKERING"""
+        try:
+            keyring.set_password(SRVKERING, usuvalida, getpass('contraseña: '))    
+        except Exception as error:
+            raise error
             
-def delete_pwd():
+            
+def delete_pwd(usu):
         """Elimina password de anillo y establece variable usu a None"""
-
+        
         try:
             keyring.delete_password(SRVKERING, usu)
-            usu = None
         except Exception as e:
             raise Exception("No existe password para " + usu + " en el servicio " + SRVKERING, e)
 
 def menu_0_validation():
     user_srv = input('\nNombre de usuario para validación: ')
     userData(user_srv)
+    return user_srv
+    
 
 if __name__=='__main__':
+    usernet = menu_0_validation()
     while(True):
-        menu_0_validation()
+        print()
         print_menu()
         option = ''
         try:
@@ -159,7 +159,7 @@ if __name__=='__main__':
             print('Opción incorrecta. Por favor, introduce un número entre el 1 y el 4.')
             
     #Delete kering pwd:
-    delete_pwd()
+    delete_pwd(usernet)
 
 
 
