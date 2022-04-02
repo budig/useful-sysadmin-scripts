@@ -23,7 +23,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 #login mode-------keyring
-#Defined in .env: (change USERNAME_NETDISCO and PASSWORD_NETDISCO) + cambiar a inglés<-----------------
+#Defined in .env: (change USERNAME_NETDISCO and PASSWORD_NETDISCO)---------------
 NETDISCO_URL=os.getenv('NETDISCO_URL')
 SRVKERING = os.getenv('SRVKERING')
 #USERNAME_NETDISCO=os.getenv('USERNAME_NETDISCO')
@@ -94,7 +94,7 @@ def menu_3_get_port_vlans_switch(device, usernet):
     print(df)
 
 def userData(usuvalida):
-        """ usuDatos genera anillo de contraseñas SRVKERING"""
+        """ userData generates keyring SRVKERING"""
         try:
             keyring.set_password(SRVKERING, usuvalida, getpass('contraseña: '))    
         except Exception as error:
@@ -102,7 +102,7 @@ def userData(usuvalida):
             
             
 def delete_pwd(usu):
-        """Elimina password de anillo y establece variable usu a None"""
+        """Deletes password from the ring and sets usu variable to None"""
         
         try:
             keyring.delete_password(SRVKERING, usu)
