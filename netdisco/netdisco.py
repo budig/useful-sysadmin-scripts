@@ -106,6 +106,8 @@ def delete_pwd(usu):
         
         try:
             keyring.delete_password(SRVKERING, usu)
+            print("Eliminado pwd para usuario " + usu + "en anillo")
+            print("comprobado: " + keyring.get_password(SRVKERING, usu).__class__.__name__)
         except Exception as e:
             raise Exception("No existe password para " + usu + " en el servicio " + SRVKERING, e)
 
@@ -153,13 +155,15 @@ if __name__=='__main__':
 
         elif option == 4:
             print('Adiós')
+            #Delete kering pwd:
+            delete_pwd(usernet)
             exit()
 
         else:
             print('Opción incorrecta. Por favor, introduce un número entre el 1 y el 4.')
             
-    #Delete kering pwd:
-    delete_pwd(usernet)
+    
+    
 
 
 
